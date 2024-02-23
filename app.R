@@ -182,8 +182,6 @@ server <- function(input, output) {
          mutate(`New JC` = input$z2 - (input$r2+input$delta2)*input$k2/( input$e2*(1/theta)^input$alfa2  ), # JC(input$z1, input$r1, input$delta1, input$k1, input$e1, input$alfa1, theta),
                  `New WC` =  input$b2  + input$a2*(input$z2 - input$b2+ input$k2*theta)) %>%  # WC(input$b1, input$a1, input$z1, input$k1, theta)) %>%
          mutate(diff2 = `New JC` - `New WC`)
-      #   mutate(BC1 = bevcurve(input$delta1, u, input$e1, input$alfa1),
-      #          BC2 = bevcurve(input$delta2, u, input$e2, input$alfa2))
       
       wc_jc_df <- df
     })
@@ -258,51 +256,10 @@ server <- function(input, output) {
         
         scale_color_manual(values = c("darkred", "red", "darkblue", "purple"))+
         scale_linetype_manual(values = c("dotdash", "dotdash", "solid", "solid"))+
-    #    scale_shape_manual(values = c(0,4,0,4))+
-        
-      #  geom_line(aes(y = job_creation_curve1), color = "red", size = 1.25)+
-       # geom_line(aes(y = WC_curve1), color = "red", size = 1.25)+
-       # geom_line(aes(y = job_creation_curve2), color = "blue", size = 1.25)+ geom_point(aes(y = job_creation_curve2), color = "blue", size = 4, shape = 1)+
-       # geom_line(aes(y = WC_curve2), color = "blue", size = 1.25)+ geom_point(aes(y = WC_curve2), color = "blue", size = 4, shape = 1)+
-        # geom_segment(
-        #   x = thetastar1(),
-        #   y = 0,
-        #   xend = thetastar1(),
-        #   yend = wstar1(),
-        #   linetype = "dotted",
-        #   color = "red"
-        # ) +
-        # geom_segment(
-        #   x = 0,
-        #   y = wstar1(),
-        #   xend = thetastar1(),
-        #   yend = wstar1(),
-        #   linetype = "dotted",
-        #   color = "red"
-        # ) +
-        # geom_segment(
-        #   x = thetastar2(),
-        #   y = 0,
-        #   xend = thetastar2(),
-        #   yend = wstar2(),
-        #   linetype = "dotted",
-        #   color = 'blue'
-        # ) +
-        # geom_segment(
-        #   x = 0,
-        #   y = wstar2(),
-        #   xend = thetastar2(),
-        #   yend = wstar2(),
-        #   linetype = "dotted",
-        #   color = 'blue'
-        # ) +
+ 
         theme_classic() +
         
-        
-       # scale_linetype_manual(name = "Guide", values = c("dotdash", "dotdash", "solid", "solid")) +
-       # scale_colour_manual(name = "Guide",
-                            #    "Function",
-       #                     values = c("red", "blue", "red", "blue"))+
+     
         scale_x_continuous(expand = c(0, 0), limits = c(.75*min(thetastar1(), thetastar2()), 1.25 * max(thetastar1(), thetastar2()))) +
         scale_y_continuous(expand = c(0, 0), limits = c(.75*min(wstar1(), wstar2()), 1.25 * max(wstar1(), wstar2()))) +
         xlab(TeX('Market tightness, $\\theta$')) +
@@ -354,13 +311,6 @@ output$dmp_bc <- renderPlot({
     
     ggplot(bcurve_reshape, aes(x = u, color = name, y = value, shape = name, linetype = name))+
       geom_line(size = 1)+
-    #  geom_point(size = 6)+
-    # geom_line(aes(y = JC_initial), size = 1, color = "red")+
-    # geom_line(aes(y = JC_new), size = 1, color = "blue")+
-    # geom_point(aes(y = JC_new), color = "blue", size = 4, shape = 1)+
-    # geom_line(aes(y = BC_initial), color = "green")+
-    # geom_line(aes(y = BC_new), color = "purple")+ 
-    # geom_point(aes(y = BC_new), color = "purple", size = 4, shape = 1)+
       scale_x_continuous(expand = c(0, 0), limits = c(0, 2 * max(ustar1(), ustar2()))) +
       scale_y_continuous(expand = c(0, 0), limits = c(0, 2 * max(thetastar1()*ustar1(),thetastar2()*ustar2()))) +
       scale_color_manual(values = c("darkred", "red", "darkblue", "purple"))+
@@ -376,30 +326,7 @@ output$dmp_bc <- renderPlot({
       linetype = "dotted",
       color = "red"
     ) +
-      # geom_segment(
-      #   x = 0,
-      #   y = thetastar1()*ustar1(),
-      #   xend = ustar1(),
-      #   yend = thetastar1()*ustar1(),
-      #   linetype = "dotted",
-      #   color = "red"
-      # ) +
-      # geom_segment(
-      #   x = ustar2(),
-      #   y = 0,
-      #   xend = ustar2(),
-      #   yend = thetastar2()*ustar2(),
-      #   linetype = "dotted",
-      #   color = 'blue'
-      # ) +
-      # geom_segment(
-      #   x = 0,
-      #   y = thetastar2()*ustar2(),
-      #   xend = ustar2(),
-      #   yend = thetastar2()*ustar2(),
-      #   linetype = "dotted",
-      #   color = 'blue'
-      # ) +
+ 
       theme_classic() +
       xlab(TeX('Unemployment, $u$')) +
       ylab(
@@ -409,11 +336,7 @@ output$dmp_bc <- renderPlot({
       ) +
       theme(legend.position = "left", axis.text.x = element_blank(), axis.text.y = element_blank()) +
       labs(color = element_blank(), linetype = element_blank())
-      
-      #coord_cartesian(xlim = c(0,.15), ylim = c(0,.15))+
-      #geom_segment(aes(x = ustar1, xend = ustar1, y = thetastar1*ustar1, yend = thetastar2*ustar1), size = 2, color = "red", arrow =arrow())+
-     # geom_path(data = upath, aes(x = u, y = theta*u), size = 2, color = "red", linejoin = "bevel", arrow = arrow())
-    
+     
     
   })
 })
